@@ -1,1 +1,3 @@
-# meteo
+# Meteo
+
+Exemple d'usage API.
