@@ -63,6 +63,10 @@ function getPlaceWeather(array $coord)
 
 if (isset($_GET["place"])) {
   $place = $strFn->escape($_GET["place"]);
-  $coord = getPlaceCoord($place);
-  $weather = getPlaceWeather($coord);
+  if ($place && strlen($place) <= 100) {
+    $coord = getPlaceCoord($place);
+    $weather = getPlaceWeather($coord);
+  } else {
+    unset($place);
+  }
 }

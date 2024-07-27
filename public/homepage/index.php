@@ -12,7 +12,7 @@ require_once "./ctrl.php";
   <main>
     <section id="search">
       <form target="_self" class="form">
-        <input type="search" name="place" placeholder="Localisation ...">
+        <input type="search" name="place" maxlength="100" placeholder="Localisation ...">
         <button class="bt">Chercher</button>
       </form>
     </section>
