@@ -33,7 +33,8 @@ abstract class DB extends Base
         self::$db = new PDO(self::$dsn);
       }
     } catch (Exception $err) {
-      return self::error($err);
+      $base = new parent();
+      return $base->error($err);
     }
   }
 
@@ -54,19 +55,39 @@ abstract class DB extends Base
   }
 
   /**
+   * Create sql table
+   * @param string $table Table name
+   * @param array $cols Table columns specs ["colname"=>spec, ...]
+   */
+  protected function createTable(string $table, array $cols)
+  {
+    try {
+      $colsStr = "";
+      foreach ($cols as $col => &$spec) {
+        $colsStr .= "$col $spec, ";
+      }
+      $colsStr = substr($colsStr, 0, -2);
+      $res = $this->req("CREATE TABLE IF NOT EXISTS $table ($colsStr)");
+    } catch (Exception $err) {
+      return $this->error($err);
+    }
+    return $res;
+  }
+
+  /**
    * Return sql SELECT query
    * @param string $table Table name
    * @param array $cols Table columns (["col1", "col2", ...] | ["*"])
    */
-  protected function makeSelectQuery(string $table, array $cols)
+  protected function selectQuery(string $table, array $cols)
   {
     try {
       $query = "SELECT ";
       foreach ($cols as &$col) {
-        $query += "$col, ";
+        $query .= "$col, ";
       }
       $query = substr($query, 0, -2);
-      $query += " FROM $table";
+      $query .= " FROM $table";
     } catch (Exception $err) {
       return $this->error($err);
     }
@@ -78,7 +99,7 @@ abstract class DB extends Base
    * @param string $table Table name
    * @param array $content Table content (["table_col"=>[data1, data2, ...], ...])
    */
-  protected function makeInsertQuery(string $table, array $content)
+  protected function insertQuery(string $table, array $content)
   {
     try {
       $queryCol = "(";
@@ -119,7 +140,7 @@ abstract class DB extends Base
    * @param string $table Table name
    * @param array $content Table content (["table_col1"=>"data", "table_col2"=>"data", ...])
    */
-  protected function makeUpdateQuery(string $table, array $content)
+  protected function updateQuery(string $table, array $content)
   {
     try {
       $queryCol = "";
@@ -143,7 +164,7 @@ abstract class DB extends Base
    * Return sql DELETE query
    * @param string $table Table name
    */
-  protected function makeDeleteQuery(string $table)
+  protected function deleteQuery(string $table)
   {
     try {
       $query = "DELETE FROM $table";
@@ -157,7 +178,7 @@ abstract class DB extends Base
    * Read a sql table
    * @param string $table Table name
    */
-  protected function readTable(string $table)
+  protected function selectTable(string $table)
   {
     try {
       $req = $this->req("SELECT * FROM $table");
@@ -176,7 +197,7 @@ abstract class DB extends Base
   protected function insertTable(string $table, array $content)
   {
     try {
-      [$query, $args] = $this->makeInsertQuery($table, $content);
+      [$query, $args] = $this->insertQuery($table, $content);
       $res = $this->req($query, $args);
     } catch (Exception $err) {
       return $this->error($err);
@@ -192,7 +213,7 @@ abstract class DB extends Base
   protected function updateTable(string $table, array $content)
   {
     try {
-      [$query, $args] = $this->makeUpdateQuery($table, $content);
+      [$query, $args] = $this->updateQuery($table, $content);
       $res = $this->req($query, $args);
     } catch (Exception $err) {
       return $this->error($err);
@@ -204,10 +225,10 @@ abstract class DB extends Base
    * Delete every entries of a sql table
    * @param string $table Table name
    */
-  protected function cleanTable(string $table)
+  protected function deleteTable(string $table)
   {
     try {
-      $res = $this->req("DELETE FROM $table; ALTER TABLE $table AUTO_INCREMENT= 1");
+      $res = $this->req("TRUNCATE TABLE $table");
     } catch (Exception $err) {
       return $this->error($err);
     }

@@ -22,6 +22,23 @@ class Str extends Base
   }
 
   /**
+   * Validate client input
+   * @param string $input Client Input
+   * @param int $size Max size authorized (default:100)
+   */
+  function validateInput(string $input, int $size = 100)
+  {
+    global $strFn;
+    try {
+      $input = $strFn->escape($input);
+      if (!$input || strlen($input) > $size) return null;
+    } catch (Exception $err) {
+      return $this->error($err);
+    }
+    return $input;
+  }
+
+  /**
    * Format string (capitalized and hyphens replaced by spaces)
    * @param string $text Input string
    */

@@ -86,7 +86,7 @@ class Server extends Base
    * Set a header location to go and exit script
    * @param string $location Basename to locate (default:homepage)
    */
-  function goLocation(string $location = "/public/homepage")
+  function goLocation(string $location = "/")
   {
     try {
       header("location:" . $location);
