@@ -15,8 +15,7 @@ function getPlaceCoord(string $search)
       $api["results"][0]["country"],
       $api["results"][0]["name"],
       $api["results"][0]["latitude"],
-      $api["results"][0]["longitude"],
-      $api["results"][0]["timezone"],
+      $api["results"][0]["longitude"]
     ];
     // print_r($api);
     // print_r($res);
@@ -32,7 +31,7 @@ function getPlaceWeather(array $coord)
   global $dateFn;
 
   try {
-    [$country, $place, $latitude, $longitude, $timezone] = $coord;
+    [$country, $place, $latitude, $longitude] = $coord;
     $api = $serverFn->fetch("https://api.open-meteo.com/v1/forecast?latitude=$latitude&longitude=$longitude&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,cloud_cover,surface_pressure,wind_speed_10m,wind_direction_10m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset&forecast_days=1");
     if (!isset($api["current"]) || !isset($api["daily"])) return false;
 
