@@ -22,12 +22,8 @@ require_once "./ctrl.php";
       <h3><?= $weather["place"] ?></h3>
       <aside>
         <p class="flex">
-          <span><?= $weather["country"] ?></span> |
-          <span>Mise à jour: <?= $weather["time"] . " " . $weather["is_day"] ?></span>
-        </p>
-        <p class="flex">
-          <span>Lever du Soleil: <?= $weather["sunrise"] ?></span>
-          <span>Coucher du Soleil: <?= $weather["sunset"] ?></span>
+          <span><?= $weather["country"] ?></span>
+          <span>Le <?= $weather["time"] . " " . $weather["is_day"] ?></span>
         </p>
       </aside>
 

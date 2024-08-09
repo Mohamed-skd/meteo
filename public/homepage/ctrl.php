@@ -39,7 +39,7 @@ function getPlaceWeather(array $coord)
     $weather = [
       "place" => $place,
       "country" => $country,
-      "time" => $dateFn->formatDate($api["current"]["time"], "d/m/Y H:i"),
+      "time" => $dateFn->formatDate(format: "d/m/Y à H:i"),
       "is_day" => $api["current"]["is_day"] ? "☀️" : "🌃",
       "temp" => $api["current"]["temperature_2m"] . "°C",
       "temp_max" => $api["daily"]["temperature_2m_max"][0] . "°C",
@@ -50,9 +50,7 @@ function getPlaceWeather(array $coord)
       "cloud_cover" => $api["current"]["cloud_cover"] . "%",
       "pressure" => $api["current"]["surface_pressure"] . "hPa",
       "wind_speed" => $api["current"]["wind_speed_10m"] . "km/h",
-      "wind_direction" => $api["current"]["wind_direction_10m"] . "°",
-      "sunrise" => $dateFn->formatDate($api["daily"]["sunrise"][0], "H:i:s", $timezone),
-      "sunset" => $dateFn->formatDate($api["daily"]["sunset"][0], "H:i:s", $timezone)
+      "wind_direction" => $api["current"]["wind_direction_10m"] . "°"
     ];
     // print_r($api);
     // print_r($weather);
