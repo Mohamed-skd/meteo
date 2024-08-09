@@ -23,7 +23,7 @@ require_once "./ctrl.php";
       <aside>
         <p class="flex">
           <span><?= $weather["country"] ?></span> |
-          <span><?= $weather["time"] . " " . $weather["is_day"] ?></span>
+          <span>Mise à jour: <?= $weather["time"] . " " . $weather["is_day"] ?></span>
         </p>
         <p class="flex">
           <span>Lever du Soleil: <?= $weather["sunrise"] ?></span>

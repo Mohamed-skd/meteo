@@ -19,6 +19,7 @@ function getPlaceCoord(string $search)
       $api["results"][0]["timezone"],
     ];
     // print_r($api);
+    // print_r($res);
   } catch (Exception $err) {
     return $serverFn->error($err);
   }
@@ -38,7 +39,7 @@ function getPlaceWeather(array $coord)
     $weather = [
       "place" => $place,
       "country" => $country,
-      "time" => $dateFn->formatDate($api["current"]["time"], "d/m/Y H:i", $timezone),
+      "time" => $dateFn->formatDate($api["current"]["time"], "d/m/Y H:i"),
       "is_day" => $api["current"]["is_day"] ? "☀️" : "🌃",
       "temp" => $api["current"]["temperature_2m"] . "°C",
       "temp_max" => $api["daily"]["temperature_2m_max"][0] . "°C",
@@ -54,6 +55,7 @@ function getPlaceWeather(array $coord)
       "sunset" => $dateFn->formatDate($api["daily"]["sunset"][0], "H:i:s", $timezone)
     ];
     // print_r($api);
+    // print_r($weather);
   } catch (Exception $err) {
     return $serverFn->error($err);
   }
